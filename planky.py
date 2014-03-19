@@ -14,17 +14,24 @@ def load_file(widget):
    model.append([line])
   label.set_text("")
 
+def but_call(widget,data=None):
+    window = Gtk.Window(type=Gtk.WindowType.TOPLEVEL)
+    window.set_size_request(400, 100)
+    window.set_title("Add a new Application")
+    window.set_position(Gtk.WindowPosition.CENTER)
+    window.set_border_width(0)
+    window.show()
 
 def on_btnref_clicked(widget):
-	print("Refresh clicked")
+  print("Refresh clicked")
 
 def on_btnadd_clicked(widget):
-	print("Add clicked")
+  print("Add clicked")
 
 def on_btndel_clicked(widget):
-	path = '/home/frankity/.config/plank/dock1/launchers'
-	model, treeiter = tree_selection.get_selected()
- 	if treeiter is not None:
+  path = '/home/frankity/.config/plank/dock1/launchers'
+  model, treeiter = tree_selection.get_selected()
+  if treeiter is not None:
                 print "%s has been removed" %(model[treeiter][0])
                 model.remove(treeiter)
                 os.remove(path + "/" + label.get_text())
@@ -43,7 +50,7 @@ btnref = Gtk.ToolButton(Gtk.STOCK_REFRESH)
 btnref.connect("clicked", load_file)
 		
 btnadd = Gtk.ToolButton(Gtk.STOCK_ADD)
-btnadd.connect("clicked", on_btnadd_clicked)
+btnadd.connect("clicked", but_call)
 		
 btndel = Gtk.ToolButton(Gtk.STOCK_DELETE)
 btndel.connect("clicked", on_btndel_clicked)
