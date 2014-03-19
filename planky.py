@@ -9,10 +9,10 @@ def on_tree_selection_changed(tree_selection):
 def load_file(widget):
   model.clear()
   file_list = os.listdir('/home/frankity/.config/plank/dock1/launchers')
- 
-   for line in file_list:
+
+  for line in file_list:
    model.append([line])
-  label.set_text("sd")
+  label.set_text("")
 
 
 def on_btnref_clicked(widget):
