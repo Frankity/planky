@@ -58,7 +58,6 @@ class MWindow(Gtk.Window):
   
     self.label.set_text(os.path.expanduser('~')) 
 
-  
   def on_tree_selection_changed(self,tree_selection):
    model, treeiter = self.tree_selection.get_selected()
    if treeiter != None: 
@@ -78,8 +77,10 @@ class MWindow(Gtk.Window):
               (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
       
+      path = '/usr/share/applications'
       self.add_filters(dialog)
-
+      
+      dialog.add_shortcut_folder(path)
       response = dialog.run()
       if response == Gtk.ResponseType.OK:
         print("Open clicked")
@@ -92,7 +93,7 @@ class MWindow(Gtk.Window):
   def add_filters(self, dialog):
     self.filter_any = Gtk.FileFilter()
     self.filter_any.set_name("Plank Files")
-    self.filter_any.add_pattern("*.dockitem")
+    self.filter_any.add_pattern("*.desktop")
     dialog.add_filter(self.filter_any)
 
   def on_btnref_clicked(widget):
