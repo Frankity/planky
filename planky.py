@@ -17,7 +17,7 @@ class MWindow(Gtk.Window):
     btnadd.connect("clicked", self.but_call)
   		
     btndel = Gtk.ToolButton(Gtk.STOCK_DELETE)
-    #btndel.connect("clicked", on_btndel_clicked)
+    btndel.connect("clicked", self.on_btndel_clicked)
 
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
     self.add(vbox)
@@ -53,16 +53,16 @@ class MWindow(Gtk.Window):
     self.tree_selection.connect("changed", self.on_tree_selection_changed)
 
     self.label = Gtk.Label("")
-    vbox.pack_end(self.label, expand=False, fill=True, padding=0)
+    #vbox.pack_end(self.label, expand=False, fill=True, padding=0)
     #grid.attach_next_to(label, scroller, Gtk.PositionType.BOTTOM, 1, 1)
   
     self.label.set_text(os.path.expanduser('~')) 
 
-  
   def on_tree_selection_changed(self,tree_selection):
    model, treeiter = self.tree_selection.get_selected()
    if treeiter != None: 
     self.label.set_text(model[treeiter][0])
+    print(model[treeiter][0] + ' Selected')
    
   def load_file(self, widget):
     self.model.clear()
@@ -78,8 +78,11 @@ class MWindow(Gtk.Window):
               (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
       
+      path = '/usr/share/applications'
+      dialog.add_shortcut_folder(path)
+      
       self.add_filters(dialog)
-
+      
       response = dialog.run()
       if response == Gtk.ResponseType.OK:
         print("Open clicked")
@@ -92,7 +95,7 @@ class MWindow(Gtk.Window):
   def add_filters(self, dialog):
     self.filter_any = Gtk.FileFilter()
     self.filter_any.set_name("Plank Files")
-    self.filter_any.add_pattern("*.dockitem")
+    self.filter_any.add_pattern("*.desktop")
     dialog.add_filter(self.filter_any)
 
   def on_btnref_clicked(widget):
@@ -101,13 +104,14 @@ class MWindow(Gtk.Window):
   def on_btnadd_clicked(widget):
     print("Add clicked")
 
-  def on_btndel_clicked(widget):
+  def on_btndel_clicked(self, widget):
     path = os.path.expanduser('~')+'/.config/plank/dock1/launchers'
-    model, treeiter = tree_selection.get_selected()
+    model, treeiter = self.tree_selection.get_selected()
     if treeiter is not None:
                   print "%s has been removed" %(model[treeiter][0])
-                  model.remove(treeiter)
-                  os.remove(path + "/" + label.get_text())
+                  #model.remove(treeiter)
+                  os.remove(path + "/" + self.label.get_text())
+                  self.load_file(self)
 
 wins = MWindow()
 wins.connect("delete-event", Gtk.main_quit)
