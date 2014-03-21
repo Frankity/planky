@@ -79,10 +79,16 @@ class MWindow(Gtk.Window):
                Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
       
       path = '/usr/share/applications'
+<<<<<<< HEAD
       dialog.add_shortcut_folder(path)
       
       self.add_filters(dialog)
       
+=======
+      self.add_filters(dialog)
+      
+      dialog.add_shortcut_folder(path)
+>>>>>>> c8817e3c41863fa1119ec880ecec2255be49e54b
       response = dialog.run()
       if response == Gtk.ResponseType.OK:
         print("Open clicked")
