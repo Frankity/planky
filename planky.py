@@ -6,7 +6,7 @@ class MWindow(Gtk.Window):
   def __init__(self):
     Gtk.Window.__init__(self,title="Planky")
 
-    self.set_size_request(400, 300)    
+    self.set_size_request(500, 300)    
     self.set_position(Gtk.WindowPosition.CENTER)
     self.set_border_width(0)
 
@@ -23,7 +23,7 @@ class MWindow(Gtk.Window):
     prop.connect("clicked", self.on_prop_clicked)
 
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-    self.add(vbox)
+    #self.add(vbox)
 
     toolbar = Gtk.Toolbar()
     toolbar.insert(btnref, 0)
@@ -45,7 +45,7 @@ class MWindow(Gtk.Window):
    
     self.treeview = Gtk.TreeView()  
     renderer = Gtk.CellRendererText()    
-    column = Gtk.TreeViewColumn("Tracks", renderer, text=0)  
+    column = Gtk.TreeViewColumn("Current Applications in Plank", renderer, text=0)  
     self.treeview.append_column(column)
     scroller.add(self.treeview)
    
@@ -62,6 +62,30 @@ class MWindow(Gtk.Window):
   
     self.label.set_text(os.path.expanduser('~')) 
     self.load_file(self)
+
+    vbox2 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+    switch = Gtk.Switch()
+    switch.connect("notify::active", self.on_switch_activated)
+    switch.set_active(False)
+    
+    vbox2.pack_start(switch,expand=False, fill=False, padding=0)
+
+    nb = Gtk.Notebook()
+    self.add(nb)
+
+    lbtab1 = Gtk.Label("Applications")
+    nb.append_page(vbox, lbtab1)
+
+    lbtab1 = Gtk.Label("Plank Options")
+    nb.append_page(vbox2, lbtab1)
+
+  def on_switch_activated(self, switch, gparam):
+    if switch.get_active():
+      state = "on"
+    else:
+      state = "off"
+    print("Switch was turned", state)
 
   def on_tree_selection_changed(self,tree_selection):
    model, treeiter = self.tree_selection.get_selected()
@@ -97,7 +121,6 @@ class MWindow(Gtk.Window):
         omg = xd.replace('desktop','dockitem')
         fo = open(os.path.expanduser('~') + "/.config/plank/dock1/launchers/" + omg ,"wb")
         fo.write('[PlankItemsDockItemPreferences]\n')
-        #lol = dialog.get_filename()
         fo.write('Launcher=file://'+str(dialog.get_filename()))
         fo.close()
       elif response == Gtk.ResponseType.CANCEL:
