@@ -19,6 +19,9 @@ class MWindow(Gtk.Window):
     btndel = Gtk.ToolButton(Gtk.STOCK_DELETE)
     btndel.connect("clicked", self.on_btndel_clicked)
 
+    prop = Gtk.ToolButton(Gtk.STOCK_PROPERTIES)
+    prop.connect("clicked", self.on_prop_clicked)
+
     vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
     self.add(vbox)
 
@@ -26,6 +29,7 @@ class MWindow(Gtk.Window):
     toolbar.insert(btnref, 0)
     toolbar.insert(btnadd, 1)
     toolbar.insert(btndel, 2)
+    toolbar.insert(prop, 3)
     vbox.pack_start(toolbar, expand=False, fill=True, padding=0)
 
     grid = Gtk.Grid()
@@ -57,6 +61,7 @@ class MWindow(Gtk.Window):
     #grid.attach_next_to(label, scroller, Gtk.PositionType.BOTTOM, 1, 1)
   
     self.label.set_text(os.path.expanduser('~')) 
+    self.load_file(self)
 
   def on_tree_selection_changed(self,tree_selection):
    model, treeiter = self.tree_selection.get_selected()
@@ -98,7 +103,6 @@ class MWindow(Gtk.Window):
       elif response == Gtk.ResponseType.CANCEL:
         print("Cancel clicked")     
       
-
       self.load_file(self)
 
       dialog.destroy()
@@ -113,6 +117,9 @@ class MWindow(Gtk.Window):
     print("Refresh clicked")
 
   def on_btnadd_clicked(widget):
+    print("Add clicked")
+
+  def on_prop_clicked(widget):
     print("Add clicked")
 
   def on_btndel_clicked(self, widget):
