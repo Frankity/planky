@@ -79,22 +79,27 @@ class MWindow(Gtk.Window):
                Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
       
       path = '/usr/share/applications'
-<<<<<<< HEAD
       dialog.add_shortcut_folder(path)
       
       self.add_filters(dialog)
       
-=======
-      self.add_filters(dialog)
-      
-      dialog.add_shortcut_folder(path)
->>>>>>> c8817e3c41863fa1119ec880ecec2255be49e54b
       response = dialog.run()
       if response == Gtk.ResponseType.OK:
         print("Open clicked")
         print("File selected: " + dialog.get_filename())
+        lol = dialog.get_filename()
+        xd = lol.replace('/usr/share/applications/', '')
+        omg = xd.replace('desktop','dockitem')
+        fo = open(os.path.expanduser('~') + "/.config/plank/dock1/launchers/" + omg ,"wb")
+        fo.write('[PlankItemsDockItemPreferences]\n')
+        #lol = dialog.get_filename()
+        fo.write('Launcher=file://'+str(dialog.get_filename()))
+        fo.close()
       elif response == Gtk.ResponseType.CANCEL:
-        print("Cancel clicked")
+        print("Cancel clicked")     
+      
+
+      self.load_file(self)
 
       dialog.destroy()
 
